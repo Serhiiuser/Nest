@@ -2,6 +2,7 @@ import {IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString} from "cl
 import {ApiProperty} from "@nestjs/swagger";
 
 export class CreateUsersDto {
+    id?: number
     @ApiProperty({minLength: 2, maxLength: 40})
     @IsString()
     @IsNotEmpty()
@@ -12,7 +13,7 @@ export class CreateUsersDto {
     @IsOptional()
     age: number;
 
-    @ApiProperty({required: true,example: 'user@mail.com'})
+    @ApiProperty({required: true,example: '@mail.com'})
     @IsString()
     @IsEmail()
     @IsNotEmpty()
