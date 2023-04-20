@@ -13,7 +13,17 @@ export class UsersController {
     }
 
     @Get()
-    async getUsersList() {
+    async getUsersList(@Req() req: any, @Res() res: any) {
+        return res.status(HttpStatus.OK).json(await this.userService.getUserList());
+
+    }
+    @ApiParam({name: 'userId', required: true})
+    @Get('/:userId')
+    async getById(
+        @Req() req: any,
+        @Res() res: any,
+        @Param('userId') userId: string,) {
+        return res.status(HttpStatus.OK).json(await this.userService.getUserById(userId));
 
     }
 
@@ -25,6 +35,7 @@ export class UsersController {
     ) {
         return res.status(HttpStatus.CREATED).json(await this.userService.createUser(body));
     }
+
     @ApiParam({name: 'userId', required: true})
     @Patch('/:userId')
     async updateUser(
@@ -42,7 +53,6 @@ export class UsersController {
     ) {
         return res
             .status(HttpStatus.OK)
-            // @ts-ignore
             .json(await this.userService.deleteUser(userId));
     }
 

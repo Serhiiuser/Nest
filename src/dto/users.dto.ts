@@ -23,7 +23,7 @@ export class CreateUsersDto {
     city: string;
 
     @ApiProperty()
-    @IsString()
+    @IsBoolean()
     @IsOptional()
     status: boolean;
 }
