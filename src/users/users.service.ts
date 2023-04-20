@@ -36,7 +36,9 @@ export class UsersService {
     }
 
     async deleteUser(id: string) {
-        this.prismaService.user.delete( {id:userId})
+        // this.prismaService.user.delete({
+        //     where: id === userId
+        // })
          return this.prismaService.user.deleteMany();
     }
 }
