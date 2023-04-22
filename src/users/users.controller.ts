@@ -1,13 +1,32 @@
-import {Body, Controller, Delete, Get, HttpStatus, Param, Patch, Post, Req, Res} from '@nestjs/common';
-import {CreateUsersDto} from "./dto/users.dto";
+import {
+    Body,
+    Controller,
+    Delete, forwardRef,
+    Get,
+    HttpStatus, Inject,
+    Param,
+    Patch,
+    Post,
+    Req,
+    Res,
+    UploadedFile,
+    UseInterceptors
+} from '@nestjs/common';
+import {CreateUserDto} from "./dto/users.dto";
 import {UsersService} from "./users.service";
 import {ApiParam, ApiTags} from "@nestjs/swagger";
+import {FileInterceptor} from "@nestjs/platform-express";
+import {diskStorage} from "multer";
+import {editFileName, imageFileFilter} from "../core/file-upload/file.upload";
+import {PetsService} from "../pets/pets.service";
 
 @ApiTags('Users')
 @Controller('users')
 export class UsersController {
     constructor(
-        private readonly userService: UsersService
+        @Inject(forwardRef(() => UsersService))
+        private readonly userService: UsersService,
+        private readonly petsService: PetsService,
     ) {
 
     }
@@ -17,6 +36,7 @@ export class UsersController {
         return res.status(HttpStatus.OK).json(await this.userService.getUserList());
 
     }
+
     @ApiParam({name: 'userId', required: true})
     @Get('/:userId')
     async getById(
@@ -28,12 +48,31 @@ export class UsersController {
     }
 
     @Post()
+    @UseInterceptors(
+        FileInterceptor(
+            'file', {
+                storage: diskStorage({
+                        destination: './public',
+                        filename: editFileName,
+                    }),
+              fileFilter:  imageFileFilter
+            }
+        )
+    )
     async createUser(
         @Req() req: any,
-        @Body() body: CreateUsersDto,
-        @Res() res: any
+        @Body() body: CreateUserDto,
+        @Res() res: any,
+        @UploadedFile() file: Express.Multer.File
     ) {
-        return res.status(HttpStatus.CREATED).json(await this.userService.createUser(body));
+        if (file){
+            body.avatar = `public/${file.filename}`
+
+        }
+        return res
+            .status(HttpStatus.CREATED)
+            .json(await this.userService
+                .createUser(body));
     }
 
     @ApiParam({name: 'userId', required: true})
@@ -44,6 +83,9 @@ export class UsersController {
         @Param('userId') userId: string,) {
 
     }
+
+    @Post('animals/userId')
+    async addPet() {}
 
     @Delete('/:userId')
     async deleteUser(

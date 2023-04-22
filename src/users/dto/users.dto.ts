@@ -1,8 +1,8 @@
 import {IsBoolean, IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString} from "class-validator";
 import {ApiProperty} from "@nestjs/swagger";
 
-export class CreateUsersDto {
-    id?: number
+export class CreateUserDto {
+
     @ApiProperty({minLength: 2, maxLength: 40})
     @IsString()
     @IsNotEmpty()
@@ -26,5 +26,8 @@ export class CreateUsersDto {
     @ApiProperty()
     @IsBoolean()
     @IsOptional()
-    status: boolean;
+    status: boolean
+
+    @ApiProperty()
+    avatar: string;
 }
