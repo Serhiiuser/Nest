@@ -17,8 +17,8 @@ model User {
   name     String?
   city     String?
   age      Int?
-  avatar   String
-  password String?
+  avatar   String?
+  password String
   status   Boolean? @default(false)
   pets     Pets[]
 }

@@ -18,6 +18,7 @@ export class UsersService {
                 city: userData.city,
                 email: userData.email,
                 name: userData.name,
+                password:userData.password,
                 status: userData.status
 
             }
@@ -42,5 +43,10 @@ export class UsersService {
     async deleteUser(id: string) {
         // this.prismaService.user.deleteMany()
         //  return this.prismaService.user.deleteMany();
+    }
+    async findByUserName (userEmail:string) {
+        return  this.prismaService.user.findFirst({
+            where: {email: userEmail}
+        });
     }
 }

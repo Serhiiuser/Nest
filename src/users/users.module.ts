@@ -4,10 +4,11 @@ import { UsersService } from './users.service';
 import { PetsModule } from '../pets/pets.module';
 import { PetsService } from '../pets/pets.service';
 import {PrismaService} from "../core/odm/prisma.service";
+import {PrismaModule} from "../core/odm/prisma.module";
 
 
 @Module({
-    imports: [ forwardRef(() => PetsModule)],
+    imports: [ PrismaModule, forwardRef(() => PetsModule)],
     controllers: [UsersController],
     providers: [PrismaService, UsersService, PetsService],
 })
