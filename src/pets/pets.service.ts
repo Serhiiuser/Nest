@@ -18,12 +18,13 @@ export class PetsService {
             throw new HttpException("No user", HttpStatus.NOT_FOUND);
         }
 
+
         return this.prismaService.pets.create({
             data: {
                 name:data.name,
                 type:data.type,
                 status:data.status,
-                ownerId:user.id,
+                // ownerId:user.id,
                 image:data.image,
                 logo:data.logo,
 

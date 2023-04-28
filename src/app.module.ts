@@ -7,10 +7,14 @@ import { UsersModule } from './users/users.module';
 import { PetsModule } from './pets/pets.module';
 import {PrismaModule} from "./core/odm/prisma.module";
 import { AuthModule } from './auth/auth.module';
+import {PassportWrapperModule} from "./auth/passport-wrapper.module";
+import {AuthController} from "./auth/auth.controller";
+import {CoreModule} from "./core/core.module";
+import {MailService} from "./core/mail/mail.service";
 
 @Module({
-  imports: [UsersModule, PetsModule,PrismaModule, AuthModule],
-  controllers: [AppController, UsersController],
+  imports: [UsersModule, PetsModule,PrismaModule, AuthModule,PassportWrapperModule,CoreModule],
+  controllers: [AppController, UsersController,AuthController],
   providers: [AppService, UsersService,PrismaModule],
 })
 export class AppModule {}
